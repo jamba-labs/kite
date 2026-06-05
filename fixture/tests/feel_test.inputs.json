@@ -1,0 +1,16 @@
+{
+  "kite_inputs": "0.1",
+  "_note": "Combined feel test: sprint right and stop (run.* metrics), then three stationary jumps (jump.* + input.* metrics). One run covers every non-assist contract rule; pair with kite probe for assist.*.",
+  "actions": { "move_x": "axis", "jump": "digital" },
+  "events": [
+    { "f": 30, "a": "move_x", "v": 1.0 },
+    { "f": 240, "a": "move_x", "v": 0.0 },
+    { "f": 330, "a": "jump", "v": 1 },
+    { "f": 336, "a": "jump", "v": 0 },
+    { "f": 450, "a": "jump", "v": 1 },
+    { "f": 456, "a": "jump", "v": 0 },
+    { "f": 570, "a": "jump", "v": 1 },
+    { "f": 576, "a": "jump", "v": 0 },
+    { "f": 690, "a": "end" }
+  ]
+}

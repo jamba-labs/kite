@@ -1,0 +1,145 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="PackedScene" path="res://player/player.tscn" id="1"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_runway"]
+size = Vector2(900, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lower"]
+size = Vector2(700, 40)
+
+[node name="Gym" type="Node2D"]
+
+[node name="Runway" type="StaticBody2D" parent="."]
+position = Vector2(450, 320)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Runway"]
+shape = SubResource("RectangleShape2D_runway")
+
+[node name="Visual" type="ColorRect" parent="Runway"]
+offset_left = -450.0
+offset_top = -20.0
+offset_right = 450.0
+offset_bottom = 20.0
+color = Color(0.13, 0.16, 0.2, 1)
+
+[node name="Tick100" type="ColorRect" parent="Runway"]
+offset_left = -350.0
+offset_top = -20.0
+offset_right = -346.0
+offset_bottom = 20.0
+color = Color(0.22, 0.28, 0.34, 1)
+
+[node name="Tick200" type="ColorRect" parent="Runway"]
+offset_left = -250.0
+offset_top = -20.0
+offset_right = -246.0
+offset_bottom = 20.0
+color = Color(0.22, 0.28, 0.34, 1)
+
+[node name="Tick300" type="ColorRect" parent="Runway"]
+offset_left = -150.0
+offset_top = -20.0
+offset_right = -146.0
+offset_bottom = 20.0
+color = Color(0.22, 0.28, 0.34, 1)
+
+[node name="Tick400" type="ColorRect" parent="Runway"]
+offset_left = -50.0
+offset_top = -20.0
+offset_right = -46.0
+offset_bottom = 20.0
+color = Color(0.22, 0.28, 0.34, 1)
+
+[node name="Tick500" type="ColorRect" parent="Runway"]
+offset_left = 50.0
+offset_top = -20.0
+offset_right = 54.0
+offset_bottom = 20.0
+color = Color(0.22, 0.28, 0.34, 1)
+
+[node name="Tick600" type="ColorRect" parent="Runway"]
+offset_left = 150.0
+offset_top = -20.0
+offset_right = 154.0
+offset_bottom = 20.0
+color = Color(0.22, 0.28, 0.34, 1)
+
+[node name="Tick700" type="ColorRect" parent="Runway"]
+offset_left = 250.0
+offset_top = -20.0
+offset_right = 254.0
+offset_bottom = 20.0
+color = Color(0.22, 0.28, 0.34, 1)
+
+[node name="Tick800" type="ColorRect" parent="Runway"]
+offset_left = 350.0
+offset_top = -20.0
+offset_right = 354.0
+offset_bottom = 20.0
+color = Color(0.22, 0.28, 0.34, 1)
+
+[node name="LedgeLip" type="ColorRect" parent="Runway"]
+offset_left = 444.0
+offset_top = -20.0
+offset_right = 450.0
+offset_bottom = 20.0
+color = Color(0.18, 0.96, 0.6, 0.55)
+
+[node name="LowerFloor" type="StaticBody2D" parent="."]
+position = Vector2(1250, 480)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LowerFloor"]
+shape = SubResource("RectangleShape2D_lower")
+
+[node name="Visual" type="ColorRect" parent="LowerFloor"]
+offset_left = -350.0
+offset_top = -20.0
+offset_right = 350.0
+offset_bottom = 20.0
+color = Color(0.13, 0.16, 0.2, 1)
+
+[node name="Tick1000" type="ColorRect" parent="LowerFloor"]
+offset_left = -250.0
+offset_top = -20.0
+offset_right = -246.0
+offset_bottom = 20.0
+color = Color(0.22, 0.28, 0.34, 1)
+
+[node name="Tick1100" type="ColorRect" parent="LowerFloor"]
+offset_left = -150.0
+offset_top = -20.0
+offset_right = -146.0
+offset_bottom = 20.0
+color = Color(0.22, 0.28, 0.34, 1)
+
+[node name="Tick1200" type="ColorRect" parent="LowerFloor"]
+offset_left = -50.0
+offset_top = -20.0
+offset_right = -46.0
+offset_bottom = 20.0
+color = Color(0.22, 0.28, 0.34, 1)
+
+[node name="Tick1300" type="ColorRect" parent="LowerFloor"]
+offset_left = 50.0
+offset_top = -20.0
+offset_right = 54.0
+offset_bottom = 20.0
+color = Color(0.22, 0.28, 0.34, 1)
+
+[node name="Tick1400" type="ColorRect" parent="LowerFloor"]
+offset_left = 150.0
+offset_top = -20.0
+offset_right = 154.0
+offset_bottom = 20.0
+color = Color(0.22, 0.28, 0.34, 1)
+
+[node name="Tick1500" type="ColorRect" parent="LowerFloor"]
+offset_left = 250.0
+offset_top = -20.0
+offset_right = 254.0
+offset_bottom = 20.0
+color = Color(0.22, 0.28, 0.34, 1)
+
+[node name="Player" parent="." instance=ExtResource("1")]
+position = Vector2(100, 288)

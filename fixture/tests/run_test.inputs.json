@@ -1,0 +1,10 @@
+{
+  "kite_inputs": "0.1",
+  "_note": "Accelerate right, hold ~3.5 s on the runway, release, coast to a stop; feeds the run.* metrics. Stays well short of the ledge at x=900.",
+  "actions": { "move_x": "axis" },
+  "events": [
+    { "f": 30, "a": "move_x", "v": 1.0 },
+    { "f": 240, "a": "move_x", "v": 0.0 },
+    { "f": 330, "a": "end" }
+  ]
+}

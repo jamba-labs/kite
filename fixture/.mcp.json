@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "kite": {
+      "command": "node",
+      "args": ["../dist/mcp.js", "--project", "."],
+      "env": { "KITE_WINDOWED": "1" }
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "kite_inputs": "0.1",
+  "_note": "Three stationary jumps from the spawn point; feeds the jump.* metrics (apex, rise:fall, hang) with three samples.",
+  "actions": { "jump": "digital" },
+  "events": [
+    { "f": 60, "a": "jump", "v": 1 },
+    { "f": 66, "a": "jump", "v": 0 },
+    { "f": 180, "a": "jump", "v": 1 },
+    { "f": 186, "a": "jump", "v": 0 },
+    { "f": 300, "a": "jump", "v": 1 },
+    { "f": 306, "a": "jump", "v": 0 },
+    { "f": 420, "a": "end" }
+  ]
+}

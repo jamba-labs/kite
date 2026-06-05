@@ -1,0 +1,25 @@
+# Kite
+
+> Game-feel telemetry for coding agents. Kite runs a Godot game with scripted
+> inputs, records frame-level telemetry, and produces feel reports (input
+> latency, jump arcs, response curves, assist windows) with per-rule
+> contract verdicts and numeric distance-to-target. Agents read the report,
+> edit movement constants, re-run, and converge on a target feel.
+
+CLI: `npx @jamba-labs/kite` (run | probe | list | init).
+MCP server: `npx -y -p @jamba-labs/kite kite-mcp --project .` exposing
+kite_run, kite_probe, kite_list_tests, kite_report.
+
+## Docs
+
+- [Agent guide & drop-in snippet](docs/agents.md): the tune loop, MCP setup, closed-form jump math
+- [Spec overview](docs/README.md): three layers (telemetry / metrics / contracts), design rules, versioning
+- [Telemetry schema](docs/telemetry.md): kite_telemetry 0.1 JSONL, input script format, determinism requirements
+- [Metric pack](docs/metrics.md): canonical metric names, units, definitions (2D platformer movement)
+- [Feel contracts](docs/feel-contracts.md): rule types, deltas, shipped presets (snappy / floaty / weighty)
+- [Report format](docs/report.md): report.json shape and terminal summary
+
+## Optional
+
+- [Godot addon README](fixture/addons/kite/README.md): recorder/injector setup in a Godot project
+- [Fixture platformer](fixture/README.md): instrumented example project with closed-form constants

@@ -1,0 +1,10 @@
+# Godot
+fixture/.godot/
+*.translation
+
+# Kite telemetry output
+fixture/runs/
+
+# Node
+node_modules/
+dist/

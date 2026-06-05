@@ -1,0 +1,59 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  analyzer:
+    name: Analyzer tests (no Godot)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - run: npm test
+      - name: Addon ship copy is in sync with the fixture
+        shell: pwsh
+        run: ./tools/sync-addon.ps1 -Check
+
+  determinism:
+    name: Recorder determinism gate (headless Godot)
+    runs-on: ubuntu-latest
+    env:
+      GODOT_VERSION: "4.6.3"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - name: Install Godot headless
+        run: |
+          curl -sSL -o godot.zip "https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}-stable/Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip"
+          unzip -q godot.zip
+          sudo mv "Godot_v${GODOT_VERSION}-stable_linux.x86_64" /usr/local/bin/godot
+          godot --version
+      - name: Import fixture project
+        run: godot --headless --import --path fixture
+      - name: Determinism gate — record every test twice, byte-diff
+        shell: pwsh
+        run: |
+          foreach ($t in "jump_test","run_test","feel_test","coyote_probe","buffer_probe") {
+            ./tools/verify-determinism.ps1 -Test "tests/$t.inputs.json" -Godot godot
+            if ($LASTEXITCODE -ne 0) { exit 1 }
+          }
+      - name: CLI smoke — floaty defaults must pass the floaty contract
+        run: node dist/cli.js run feel_test --project fixture --contract floaty
+      - name: Probe smoke — assists must measure 0 on defaults
+        run: |
+          node dist/cli.js probe all --project fixture
+          grep -q '"coyote_window_ms": 0' fixture/runs/assist.json
+          grep -q '"buffer_window_ms": 0' fixture/runs/assist.json

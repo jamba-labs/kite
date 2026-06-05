@@ -1,0 +1,15 @@
+{
+  "kite_contract": "0.1",
+  "name": "snappy",
+  "extends": null,
+  "rules": {
+    "input.latency_to_motion_frames": { "max": 3 },
+    "jump.apex_time_s": { "range": [0.3, 0.42] },
+    "jump.rise_fall_ratio": { "range": [1.0, 1.4] },
+    "jump.hang_time_s": { "max": 0.1 },
+    "run.accel_time_to_max_s": { "max": 0.15 },
+    "run.decel_time_to_stop_s": { "max": 0.1 },
+    "run.decel_shape": { "shape": "ease-out", "exponent_min": 2.0 },
+    "assist.coyote_window_ms": { "range": [60, 120] }
+  }
+}

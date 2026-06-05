@@ -1,0 +1,55 @@
+{
+  "name": "@jamba-labs/kite",
+  "version": "0.1.1",
+  "description": "Let your coding agent feel your game. A game-feel harness for Godot - input latency, response curves, replayable telemetry.",
+  "license": "MIT",
+  "author": "Jamba Labs",
+  "type": "module",
+  "keywords": [
+    "godot",
+    "game-feel",
+    "gamedev",
+    "telemetry",
+    "mcp",
+    "claude",
+    "coding-agent",
+    "platformer"
+  ],
+  "homepage": "https://runkite.dev",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jamba-labs/kite.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jamba-labs/kite/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "bin": {
+    "kite": "dist/cli.js",
+    "kite-mcp": "dist/mcp.js"
+  },
+  "files": [
+    "dist",
+    "presets"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "prepublishOnly": "npm run build"
+  },
+  "devDependencies": {
+    "@types/node": "^22",
+    "typescript": "^5",
+    "vitest": "^3"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "zod": "^4.4.3"
+  }
+}

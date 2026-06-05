@@ -1,0 +1,5 @@
+{
+  "kite_config": "0.1",
+  "scene": "res://scenes/gym.tscn",
+  "axes": { "move_x": ["move_left", "move_right"] }
+}

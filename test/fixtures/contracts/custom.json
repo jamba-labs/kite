@@ -1,0 +1,8 @@
+{
+  "kite_contract": "0.1",
+  "name": "custom",
+  "extends": "snappy",
+  "rules": {
+    "jump.apex_time_s": { "range": [0.2, 0.3] }
+  }
+}

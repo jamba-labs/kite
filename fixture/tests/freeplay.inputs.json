@@ -1,0 +1,16 @@
+{
+  "kite_inputs": "0.1",
+  "_note": "Not a feel test - a scripted run for demo B-roll: accelerate right, jump a few times across the runway, for a clean ~7s gameplay clip at any tuning.",
+  "actions": { "move_x": "axis", "jump": "digital" },
+  "events": [
+    { "f": 20, "a": "move_x", "v": 1.0 },
+    { "f": 70, "a": "jump", "v": 1 },
+    { "f": 76, "a": "jump", "v": 0 },
+    { "f": 150, "a": "jump", "v": 1 },
+    { "f": 156, "a": "jump", "v": 0 },
+    { "f": 230, "a": "jump", "v": 1 },
+    { "f": 236, "a": "jump", "v": 0 },
+    { "f": 300, "a": "move_x", "v": 0.0 },
+    { "f": 420, "a": "end" }
+  ]
+}
