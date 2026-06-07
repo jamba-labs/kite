@@ -13,20 +13,22 @@ import type { Recording, TelemetryFrame } from "../telemetry.js";
 export interface ShakeSample {
   /** frame of peak offset magnitude for this event */
   peakFrame: number;
-  /** peak |offset| during the event, px */
-  amplitudePx: number;
+  /** peak |offset| during the event, as a percentage of viewport height */
+  amplitudePctVh: number;
   /** peak → envelope below 10% of peak, seconds */
   decayS: number;
 }
 
 export interface CameraMetrics {
   samples: ShakeSample[];
-  /** mean peak amplitude across shake events; 0 when the camera never shook */
-  amplitudePx: number;
+  /** mean peak amplitude (% of viewport height); 0 when the camera never shook */
+  amplitudePctVh: number;
   /** mean decay across shake events; 0 when the camera never shook */
   decayS: number;
   /** true when an offset trace was present at all (a camera is instrumented) */
   present: boolean;
+  /** false when the recording has no viewport size to normalize against */
+  normalized: boolean;
 }
 
 /** |offset| above this (px) counts as shaking */
@@ -49,6 +51,10 @@ export function findCameraEntity(rec: Recording, excludeId?: string): string | n
 export function computeCameraMetrics(rec: Recording, entityId: string): CameraMetrics {
   const frames = rec.frames;
   const dt = 1 / rec.meta.fixed_fps;
+  // Shake is reported relative to the project's coordinate space (% of viewport
+  // height), so a contract means the same felt shake at any resolution.
+  const vh = rec.meta.viewport?.[1] ?? 0;
+  const toPctVh = vh > 0 ? 100 / vh : 0;
   const samples: ShakeSample[] = [];
   let present = false;
 
@@ -96,15 +102,16 @@ export function computeCameraMetrics(rec: Recording, entityId: string): CameraMe
       }
     }
 
-    samples.push({ peakFrame: peakF, amplitudePx: peak, decayS: (settleF - peakF) * dt });
+    samples.push({ peakFrame: peakF, amplitudePctVh: peak * toPctVh, decayS: (settleF - peakF) * dt });
     i = lastActive + 1;
   }
 
   return {
     samples,
-    amplitudePx: samples.length > 0 ? mean(samples.map((s) => s.amplitudePx)) : 0,
+    amplitudePctVh: samples.length > 0 ? mean(samples.map((s) => s.amplitudePctVh)) : 0,
     decayS: samples.length > 0 ? mean(samples.map((s) => s.decayS)) : 0,
     present,
+    normalized: toPctVh > 0,
   };
 }
 

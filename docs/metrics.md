@@ -57,9 +57,14 @@ exceeds a 0.5 px onset floor; reported as the mean across events, per-event valu
 report. Emitted whenever a camera is instrumented - `0` when it never shakes is a value,
 not an absence, so an impact contract reads as FAIL rather than skipped.
 
+Amplitude is reported **relative to the project's coordinate space** - a percentage of
+viewport height (the viewport size is in the telemetry `meta`) - so a contract means the
+same *felt* shake at any resolution, not a pixel count that only fits one screen. Decay is
+in seconds and is already scale-invariant.
+
 | Name | Unit | Definition |
 |---|---|---|
-| `camera.shake_amplitude_px` | px | peak `\|offset\|` during a shake event |
+| `camera.shake_amplitude_vh` | %vh | peak `\|offset\|` as a percentage of viewport height |
 | `camera.shake_decay_s` | s | event peak → envelope below 10% of peak |
 
 Instrument it by putting the `Camera2D` (or whatever node shakes) in the `kite_track`

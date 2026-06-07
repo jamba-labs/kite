@@ -84,6 +84,7 @@ export function synthJumpRecording(p: SynthJumpParams): SynthJumpResult {
         kite_telemetry: "0.1",
         engine: "synthetic",
         fixed_fps: fps,
+        viewport: [640, 360],
       },
       frames,
     },
@@ -149,7 +150,7 @@ export function synthRunRecording(p: SynthRunParams): Recording {
   }
 
   return {
-    meta: { k: "meta", kite_telemetry: "0.1", engine: "synthetic", fixed_fps: fps },
+    meta: { k: "meta", kite_telemetry: "0.1", engine: "synthetic", fixed_fps: fps, viewport: [640, 360] },
     frames,
   };
 }
@@ -197,7 +198,7 @@ export function synthShakeRecording(p: SynthShakeParams): Recording {
   }
 
   return {
-    meta: { k: "meta", kite_telemetry: "0.1", engine: "synthetic", fixed_fps: fps },
+    meta: { k: "meta", kite_telemetry: "0.1", engine: "synthetic", fixed_fps: fps, viewport: [640, 360] },
     frames,
   };
 }

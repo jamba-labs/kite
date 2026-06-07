@@ -164,6 +164,11 @@ func _meta_line() -> String:
 	for n in _tracked:
 		var src: String = n.scene_file_path if n.scene_file_path != "" else "inline"
 		ents[String(n.name)] = "%s (%s)" % [n.get_class(), src]
+	# The viewport (in project coordinate units) is the reference for scale-
+	# relative metrics - e.g. screenshake reported as a fraction of screen size,
+	# so a contract means the same felt shake at any resolution.
+	var vw := int(ProjectSettings.get_setting("display/window/size/viewport_width", 0))
+	var vh := int(ProjectSettings.get_setting("display/window/size/viewport_height", 0))
 	return JSON.stringify({
 		"k": "meta",
 		"kite_telemetry": TELEMETRY_VERSION,
@@ -177,6 +182,7 @@ func _meta_line() -> String:
 		"input_script": _test_path,
 		"input_script_sha256": FileAccess.get_sha256(_absolute(_test_path)),
 		"units": {"position": "px", "velocity": "px/s", "time": "s"},
+		"viewport": [vw, vh],
 		"entities": ents,
 		"started_utc": _started_utc,
 	})

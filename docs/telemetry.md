@@ -20,6 +20,7 @@ Readers must skip lines with unknown kinds and ignore unknown keys.
   "input_script": "jump_test.inputs.json",
   "input_script_sha256": "9f2c...",
   "units": { "position": "px", "velocity": "px/s", "time": "s" },
+  "viewport": [640, 360],
   "entities": { "player": "Player (res://player/player.tscn)" },
   "started_utc": "2026-06-05T21:00:00Z"
 }
@@ -27,6 +28,9 @@ Readers must skip lines with unknown kinds and ignore unknown keys.
 
 - `units` are declared, not assumed - Godot 2D records px / px/s / s; other engines
   declare their own. Layer 1 normalizes using this block.
+- `viewport` is `[width, height]` in project coordinate units - the reference for
+  scale-relative metrics (e.g. screenshake as a fraction of screen size), so a contract
+  carries the same *felt* meaning across resolutions.
 - `entities` maps short ids (used in every `frame` line) to a human-readable description
   of the tracked node.
 

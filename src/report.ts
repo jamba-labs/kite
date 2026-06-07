@@ -93,16 +93,22 @@ export function buildReport(rec: Recording, opts: BuildReportOptions): Report {
   const camId = findCameraEntity(rec, entityId);
   if (camId !== null) {
     const cam = computeCameraMetrics(rec, camId);
-    metrics["camera.shake_amplitude_px"] = scalar(
-      cam.amplitudePx,
-      "px",
-      cam.samples.map((s) => s.amplitudePx),
-    );
-    metrics["camera.shake_decay_s"] = scalar(
-      cam.decayS,
-      "s",
-      cam.samples.map((s) => s.decayS),
-    );
+    if (cam.normalized) {
+      metrics["camera.shake_amplitude_vh"] = scalar(
+        cam.amplitudePctVh,
+        "%vh",
+        cam.samples.map((s) => s.amplitudePctVh),
+      );
+      metrics["camera.shake_decay_s"] = scalar(
+        cam.decayS,
+        "s",
+        cam.samples.map((s) => s.decayS),
+      );
+    } else {
+      warnings.push(
+        "camera.*: telemetry has no viewport size to normalize shake against - re-record with the updated addon",
+      );
+    }
   }
 
   Object.assign(metrics, opts.extraMetrics);

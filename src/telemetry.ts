@@ -14,6 +14,8 @@ export interface TelemetryMeta {
   input_script?: string;
   input_script_sha256?: string;
   units?: Record<string, string>;
+  /** viewport size [w, h] in project coordinate units; reference for scale-relative metrics */
+  viewport?: [number, number];
   entities?: Record<string, string>;
   started_utc?: string;
   [key: string]: unknown;

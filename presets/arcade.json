@@ -3,7 +3,7 @@
   "name": "arcade",
   "extends": "snappy",
   "rules": {
-    "camera.shake_amplitude_px": { "range": [6, 16] },
-    "camera.shake_decay_s": { "range": [0.12, 0.3] }
+    "camera.shake_amplitude_vh": { "range": [0.4, 1.2] },
+    "camera.shake_decay_s": { "range": [0.1, 0.22] }
   }
 }
