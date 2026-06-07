@@ -24,6 +24,8 @@ export interface FrameEntity {
   p?: [number, number];
   /** velocity [x, y] */
   v?: [number, number];
+  /** node offset [x, y] - shake/recoil independent of follow position (Camera2D) */
+  o?: [number, number];
   /** state-machine state name */
   s?: string;
   /** animation name */

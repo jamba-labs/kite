@@ -54,8 +54,13 @@ Sampled **every** physics frame, no skipping, from injection start to test end.
 | `e` | tracked entities by id |
 | `e.*.p` | position `[x, y]` |
 | `e.*.v` | velocity `[x, y]` |
+| `e.*.o` | node offset `[x, y]`, if the entity exposes one - shake/recoil isolated from follow position (a `Camera2D` records its `offset` here) |
 | `e.*.s` | state-machine state name (string), if the entity exposes one |
 | `e.*.a` | current animation name, if any |
+
+The recorder samples whatever of `p`/`v`/`o`/`s` a tracked node exposes, so adding a
+metric dimension is often just adding a node to the `kite_track` group: a camera in the
+group reports its `offset`, and the screenshake metric falls out of that trace.
 
 States are recorded *per frame*, not as transition events - transitions are derived by
 Layer 1 (`s` changed between frame N-1 and N). This keeps recorders dumb.

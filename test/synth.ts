@@ -154,6 +154,54 @@ export function synthRunRecording(p: SynthRunParams): Recording {
   };
 }
 
+export interface SynthShakeParams {
+  fps?: number;
+  /** peak camera offset on landing, px */
+  amplitudePx: number;
+  /** time for trauma to fall 1 → 0, seconds */
+  durationS: number;
+  /** frames at which a landing (shake onset) occurs */
+  landFrames: number[];
+  totalFrames: number;
+}
+
+/**
+ * Camera offset envelope matching the fixture's screenshake exactly:
+ *   |offset(t)| = amplitudePx * trauma,  trauma = max(1 - t/durationS, 0)
+ * Direction alternates each frame so the trace reads as shake while the
+ * magnitude stays a clean, math-checkable envelope. Expected metrics:
+ *   amplitude ≈ amplitudePx        (peak at the landing frame, trauma = 1)
+ *   decay     ≈ 0.9 * durationS    (trauma < 0.1 ⇒ envelope below 10% of peak)
+ */
+export function synthShakeRecording(p: SynthShakeParams): Recording {
+  const fps = p.fps ?? 60;
+  const dt = 1 / fps;
+  const frames: TelemetryFrame[] = [];
+
+  for (let f = 0; f < p.totalFrames; f++) {
+    let trauma = 0;
+    for (const land of p.landFrames) {
+      if (f >= land) trauma = Math.max(trauma, Math.max(1 - ((f - land) * dt) / p.durationS, 0));
+    }
+    const ox = p.amplitudePx * trauma * (f % 2 === 0 ? 1 : -1);
+    frames.push({
+      k: "frame",
+      f,
+      t: f * dt,
+      in: {},
+      e: {
+        player: { p: [100, 288], v: [0, 0] },
+        Camera2D: { p: [100, 288], o: [round3(ox), 0] },
+      },
+    });
+  }
+
+  return {
+    meta: { k: "meta", kite_telemetry: "0.1", engine: "synthetic", fixed_fps: fps },
+    frames,
+  };
+}
+
 function round3(x: number): number {
   return Math.round(x * 1000) / 1000;
 }

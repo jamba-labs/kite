@@ -60,8 +60,8 @@ just describe the feel.
 | Layer | What it is |
 |---|---|
 | [Telemetry](docs/telemetry.md) | A Godot addon replays input scripts deterministically and records frame-sampled JSONL. Same script + same seed → byte-identical output. |
-| [Metrics](docs/metrics.md) | The analyzer derives feel measurements - input latency, jump arc (apex, rise:fall, hang), accel/decel curve shapes, empirically-probed coyote/buffer windows. **This is the core**: named, objective numbers the agent maps your feel-words onto. |
-| [Feel contracts](docs/feel-contracts.md) *(optional)* | Target rules over those metrics for when you want a hard goal or a CI gate. `snappy` / `floaty` / `weighty` ship as forkable presets. |
+| [Metrics](docs/metrics.md) | The analyzer derives feel measurements - input latency, jump arc (apex, rise:fall, hang), accel/decel curve shapes, empirically-probed coyote/buffer windows, landing screenshake. **This is the core**: named, objective numbers the agent maps your feel-words onto. |
+| [Feel contracts](docs/feel-contracts.md) *(optional)* | Target rules over those metrics for when you want a hard goal or a CI gate. `snappy` / `floaty` / `weighty` ship as forkable presets; `arcade` shows composition - it's `snappy` with screenshake bounds layered on via `extends`. |
 
 All analysis is engine-agnostic - the addon is a dumb recorder, which is what
 makes other engines a port rather than a rewrite.

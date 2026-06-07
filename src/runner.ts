@@ -246,7 +246,13 @@ function discoverEntity(
 ): { id: string; fps: number } {
   const end = baseEvents.find((e) => e.a === "end")?.f ?? 60;
   const rec = runner([{ f: Math.min(end, 10), a: "end" }], "discover");
-  const id = Object.keys(rec.meta.entities ?? {})[0] ?? Object.keys(rec.frames[0]?.e ?? {})[0];
+  const frame0 = rec.frames[0]?.e ?? {};
+  const order = Object.keys(rec.meta.entities ?? {});
+  const ids = order.length > 0 ? order : Object.keys(frame0);
+  // The character is the velocity-bearing entity; skip auxiliary tracked nodes
+  // (a camera records offset/position but no velocity) so the probe measures
+  // the player's jumps, not a node that never leaves the ground.
+  const id = ids.find((e) => frame0[e]?.v !== undefined) ?? ids[0];
   if (!id) throw new KiteError("no tracked entities in telemetry");
   return { id, fps: rec.meta.fixed_fps };
 }

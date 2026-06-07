@@ -25,6 +25,9 @@ When asked to change how the game feels (e.g. "make it snappy"):
    - `assist.coyote_window_ms` / `assist.buffer_window_ms` track `COYOTE_MS` /
      `BUFFER_MS` (measured value runs ~1-2 frames under the configured one -
      engine input latency; aim slightly high)
+   - `camera.shake_amplitude_px` ≈ `SHAKE_LANDING_PX`; `camera.shake_decay_s` ≈
+     `0.9 × SHAKE_DURATION` (landing screenshake; measured by `kite_run`, no
+     probe needed). The `arcade` contract is `snappy` plus shake bounds.
 4. **Assist constants need `kite_probe`,** not `kite_run` - run it after
    changing `COYOTE_MS` or `BUFFER_MS` (it's slow, ~15 game launches; don't
    run it after unrelated edits).

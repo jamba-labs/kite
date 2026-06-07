@@ -1,0 +1,9 @@
+{
+  "kite_contract": "0.1",
+  "name": "arcade",
+  "extends": "snappy",
+  "rules": {
+    "camera.shake_amplitude_px": { "range": [6, 16] },
+    "camera.shake_decay_s": { "range": [0.12, 0.3] }
+  }
+}

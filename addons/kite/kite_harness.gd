@@ -96,6 +96,8 @@ func _physics_process(_delta: float) -> void:
 			e["p"] = [snappedf(n.position.x, 0.001), snappedf(n.position.y, 0.001)]
 		if "velocity" in n:
 			e["v"] = [snappedf(n.velocity.x, 0.001), snappedf(n.velocity.y, 0.001)]
+		if "offset" in n:
+			e["o"] = [snappedf(n.offset.x, 0.001), snappedf(n.offset.y, 0.001)]
 		if "state" in n:
 			e["s"] = n.state
 		ents[String(n.name)] = e

@@ -14,6 +14,11 @@ var _decel_v0 := 0.0
 var _coyote_left := 0.0
 var _buffer_left := 0.0
 
+# Landing-impact screenshake.
+var _trauma := 0.0
+var _was_grounded := true
+@onready var _camera: Camera2D = $Camera2D
+
 # FIFO of [move_dir, jump_pressed] for the artificial input delay.
 var _input_queue: Array = []
 
@@ -33,6 +38,7 @@ func _physics_process(delta: float) -> void:
 	_apply_vertical(jump_pressed, delta)
 	move_and_slide()
 	_update_state(dir)
+	_apply_shake(delta)
 
 
 func _apply_horizontal(dir: float, delta: float) -> void:
@@ -81,6 +87,23 @@ func _update_state(dir: float) -> void:
 		state = "run" if (dir != 0.0 or absf(velocity.x) > 0.5) else "idle"
 	else:
 		state = "jump" if velocity.y < 0.0 else "fall"
+
+
+# Landing impact: a screenshake whose peak (px) and decay (s) are tuned in
+# MovementParams. Magnitude is deterministic (= SHAKE_LANDING_PX * trauma);
+# only the direction is random, so the recorded envelope is clean and the
+# harness-seeded RNG keeps runs byte-identical.
+func _apply_shake(delta: float) -> void:
+	var grounded := is_on_floor()
+	if grounded and not _was_grounded:
+		_trauma = 1.0
+	_was_grounded = grounded
+	if _trauma > 0.0 and MovementParams.SHAKE_LANDING_PX > 0.0:
+		var ang := randf() * TAU
+		_camera.offset = Vector2(cos(ang), sin(ang)) * MovementParams.SHAKE_LANDING_PX * _trauma
+		_trauma = maxf(_trauma - delta / maxf(MovementParams.SHAKE_DURATION, 0.0001), 0.0)
+	else:
+		_camera.offset = Vector2.ZERO
 
 
 # Envelope phase in [0, 1]; zero-length completes instantly.

@@ -21,10 +21,22 @@ itself and to be the tune-loop demo target.
 Open `project.godot` in Godot 4.6+ and run. A/D or arrows to move, Space to
 jump.
 
+## First run: build the class cache
+
+On a fresh checkout the `MovementParams` global isn't registered yet, so the
+very first headless run can fail with `Identifier "MovementParams" not declared`.
+Build the cache once and it's fixed for good:
+
+```sh
+godot --headless --path . --import
+```
+
 ## Determinism
 
 Physics runs at the (default) fixed 60 ticks/s timestep - don't override it
-variably. The controller runs entirely in `_physics_process`, uses no RNG
-and no wall-clock time. The
-recorder's conformance requirement (same script + seed → byte-identical
-telemetry) is expected to hold on this project exactly.
+variably. The controller runs entirely in `_physics_process` and uses no
+wall-clock time. The one RNG is the landing screenshake's *direction*, drawn
+from Godot's global generator that the recorder seeds at injection start - so
+the shake is byte-identical across runs with the same seed (its magnitude is
+deterministic regardless). The recorder's conformance requirement (same script
++ seed → byte-identical telemetry) holds on this project exactly.

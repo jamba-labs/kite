@@ -2,6 +2,7 @@
 // compute, plus contract evaluation when a contract is given.
 
 import { evaluateContract, type ContractResult, type FeelContract } from "./contract.js";
+import { computeCameraMetrics, findCameraEntity } from "./metrics/camera.js";
 import { computeInputLatency } from "./metrics/latency.js";
 import { computeJumpMetrics } from "./metrics/jump.js";
 import { computeRunMetrics } from "./metrics/run.js";
@@ -29,10 +30,7 @@ export interface BuildReportOptions {
 }
 
 export function buildReport(rec: Recording, opts: BuildReportOptions): Report {
-  const entityId =
-    opts.entityId ??
-    Object.keys(rec.meta.entities ?? {})[0] ??
-    Object.keys(rec.frames[0]?.e ?? {})[0];
+  const entityId = opts.entityId ?? pickPrimaryEntity(rec);
   if (!entityId) throw new Error("telemetry has no entities to analyze");
 
   const metrics: Record<string, MetricValue> = {};
@@ -89,6 +87,24 @@ export function buildReport(rec: Recording, opts: BuildReportOptions): Report {
     warnings.push("run.*: no ground movement in this recording");
   }
 
+  // camera.* - screenshake envelope, measured from a separate tracked node's
+  // offset trace (the camera). Emitted whenever a camera is instrumented, even
+  // at zero shake, so an "impact" contract reads as FAIL rather than skipped.
+  const camId = findCameraEntity(rec, entityId);
+  if (camId !== null) {
+    const cam = computeCameraMetrics(rec, camId);
+    metrics["camera.shake_amplitude_px"] = scalar(
+      cam.amplitudePx,
+      "px",
+      cam.samples.map((s) => s.amplitudePx),
+    );
+    metrics["camera.shake_decay_s"] = scalar(
+      cam.decayS,
+      "s",
+      cam.samples.map((s) => s.decayS),
+    );
+  }
+
   Object.assign(metrics, opts.extraMetrics);
 
   const report: Report = {
@@ -108,6 +124,18 @@ export function buildReport(rec: Recording, opts: BuildReportOptions): Report {
   }
 
   return report;
+}
+
+// The character is the entity carrying velocity; auxiliary tracked nodes (a
+// camera recording only offset/position) must not be picked for jump/run/input
+// analysis. Group order is not guaranteed to list the character first.
+function pickPrimaryEntity(rec: Recording): string | undefined {
+  const ids = Object.keys(rec.meta.entities ?? {});
+  const order = ids.length > 0 ? ids : Object.keys(rec.frames[0]?.e ?? {});
+  for (const id of order) {
+    if (rec.frames.some((f) => f.e[id]?.v !== undefined)) return id;
+  }
+  return order[0];
 }
 
 function scalar(value: number, unit: string, samples?: number[]): MetricValue {

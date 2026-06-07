@@ -1,0 +1,12 @@
+{
+  "kite_inputs": "0.1",
+  "_note": "Impact traversal for the camera.shake demo: sprint right off the ledge and slam onto the lower floor (a big 160px landing), then a jump for a second hard landing. The dramatic gameplay clip - feel_test stays the metrics clip.",
+  "actions": { "move_x": "axis", "jump": "digital" },
+  "events": [
+    { "f": 20, "a": "move_x", "v": 1.0 },
+    { "f": 320, "a": "move_x", "v": 0.0 },
+    { "f": 380, "a": "jump", "v": 1 },
+    { "f": 386, "a": "jump", "v": 0 },
+    { "f": 480, "a": "end" }
+  ]
+}

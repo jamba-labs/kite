@@ -19,6 +19,12 @@ const DECEL_EXPONENT := 1.0
 const COYOTE_MS := 0.0
 const BUFFER_MS := 0.0
 
+# Landing impact (screenshake). Off by default - the demo's flat "before".
+# camera.shake_amplitude_px ≈ SHAKE_LANDING_PX
+# camera.shake_decay_s     ≈ 0.9 * SHAKE_DURATION
+const SHAKE_LANDING_PX := 0.0   # px; peak camera offset on landing (0 = no shake)
+const SHAKE_DURATION := 0.25    # s; time for the shake to decay to zero
+
 # Artificial latency on every input; lets the latency metric be checked against
 # a known answer. Keep 0 for feel work.
 const INPUT_DELAY_FRAMES := 0

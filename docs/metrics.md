@@ -48,6 +48,24 @@ differently per phase:
 | `run.decel_shape` | shape | curve fit of the decel envelope |
 | `run.max_speed_px_s` | px/s | sustained max ground speed |
 
+### Camera impact (screenshake)
+
+A separate measurement *dimension*, not a movement style: any movement preset can sit
+anywhere on it. Measured from the camera's `offset` trace (the `o` field), so the shake is
+isolated from camera-follow motion. A shake *event* is a run of frames where `|offset|`
+exceeds a 0.5 px onset floor; reported as the mean across events, per-event values in the
+report. Emitted whenever a camera is instrumented - `0` when it never shakes is a value,
+not an absence, so an impact contract reads as FAIL rather than skipped.
+
+| Name | Unit | Definition |
+|---|---|---|
+| `camera.shake_amplitude_px` | px | peak `\|offset\|` during a shake event |
+| `camera.shake_decay_s` | s | event peak → envelope below 10% of peak |
+
+Instrument it by putting the `Camera2D` (or whatever node shakes) in the `kite_track`
+group; the recorder samples its `offset` automatically. Contracts compose this onto a
+movement style via `extends` - the shipped `arcade` preset is `snappy` plus shake bounds.
+
 ### Assist windows (detected empirically)
 
 These are *probed*, not read from config: the input script (or a generated probe variant)
@@ -65,4 +83,4 @@ still succeeds. `0` means the assist doesn't exist; that's a value, not an error
   expressed in the unit above - never from wall clock.
 - "Noise floor" = 0.5 px/frame displacement, pending empirical tuning on the fixture.
 - v0.2 candidates (out of scope, listed so names don't get squatted): `jump.variable_height_ratio`,
-  `air.control_authority`, `land.recovery_frames`, juice/hitstop pack.
+  `air.control_authority`, `land.recovery_frames`, `landing.squash_ratio`, `hitstop.duration_s`.
