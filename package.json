@@ -1,6 +1,6 @@
 {
   "name": "@jamba-labs/kite",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Let your coding agent feel your game. A game-feel harness for Godot - input latency, response curves, replayable telemetry.",
   "license": "MIT",
   "author": "Jamba Labs",
